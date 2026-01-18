@@ -1,9 +1,11 @@
 /*
  * AMT22_Single_Turn_SPI_Sample_Code_Uno.ino
  * Company: CUI Devices
- * Author: Jason Kelly, Damon Tarry
+ * Original Author: Jason Kelly, Damon Tarry
  * Version: 2.0.2.0
  * Date: July 18, 2023
+ * 
+ * Edited: Logan Schmid - 1/17/2026
  *
  * This sample code can be used with the Arduino Uno to control the AMT22 encoder.
  * It uses SPI to control the encoder and the the Arduino UART to report back to the PC
@@ -63,13 +65,12 @@
 /* SPI commands */
 #define AMT22_NOP       0x00
 #define AMT22_ZERO      0x70
-#define AMT22_TURNS     0xA0
 
 /* We will use this define macro so we can write code once compatible with 12 or 14 bit encoders */
 #define RESOLUTION      14
 
 //create an array containing CS pin numbers for all connected encoders
-uint8_t cs_pins[] = {2}; //only one encoder connected, using pin 2 on arduino for CS
+uint8_t cs_pins[] = {5}; //only one encoder connected, using pin 2 on arduino for CS
 //uint8_t cs_pins[] = {2, 3}; //two encoders connected, using pins 2 & 3 on arduino for CS
 
 void setup()
@@ -92,15 +93,15 @@ void setup()
   //SPI.setClockDivider(SPI_CLOCK_DIV4);   // 4 MHz
   //SPI.setClockDivider(SPI_CLOCK_DIV8);   // 2 MHz
   //SPI.setClockDivider(SPI_CLOCK_DIV16);  // 1 MHz
-  SPI.setClockDivider(SPI_CLOCK_DIV32);    // 500 kHz
-  //SPI.setClockDivider(SPI_CLOCK_DIV64);  // 250 kHz
-  //SPI.setClockDivider(SPI_CLOCK_DIV128); // 125 kHz
+//  SPI.setClockDivider(SPI_CLOCK_DIV32);    // 500 kHz
+  SPI.setClockDivider(SPI_CLOCK_DIV64);  // 250 kHz
+//  SPI.setClockDivider(SPI_CLOCK_DIV128); // 125 kHz
 
   //start SPI bus
   SPI.begin();
 
   //if you want to set the zero position before beginning uncomment the following function call
-  //setZeroSPI(ENC_0);
+  setZeroSPI(cs_pins[0]);
   //setZeroSPI(ENC_1);
 }
 
